@@ -15,6 +15,22 @@ const userLoginZodSchema = z.object({
   password: z.string().min(3).max(20),
 });
 
+export const getUserProfile = async (req, res) => {
+  try{
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+    return res.status(200).json({
+      success:true,
+      user
+    })
+  }catch(error){
+    return res.status(500).json({
+      success:false,
+      message:"Internal server error"
+    })
+  }
+}
+
 export const registerUser = async (req, res) => {
   try {
     // Validate input
