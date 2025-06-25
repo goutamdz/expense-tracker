@@ -42,7 +42,9 @@ const Login = () => {
       if (response.data.success) {
         showSuccessToast('Login successful!')
         localStorage.setItem('token', response.data.token)
-        navigate('/')
+        setTimeout(()=>{
+          navigate('/')
+        },3000)
       }
     } catch (error) {
       console.error('Login error:', error)

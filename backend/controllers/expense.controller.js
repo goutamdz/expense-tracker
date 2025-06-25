@@ -6,7 +6,7 @@ import { z } from 'zod';
 const expenseSchema = z.object({
     title: z.string().min(1, "Title is required").max(100, "Title too long"),
     amount: z.number().positive("Amount must be positive"),
-    date: z.string().datetime("Invalid date format"),
+    date: z.string().date("Invalid date format"),
     category: z.string().min(1, "Category is required"),
     source: z.enum(['cash', 'debit', 'credit', 'other'], "Invalid source"),
     description: z.string().optional()
@@ -17,6 +17,8 @@ const createExpense = async (req, res) => {
     try {
         const userId = req.user.id;
         const expenseData = req.body;
+        expenseData.amount = Number(expenseData.amount);
+        console.log(expenseData);
 
         // Validate input
         const validation = expenseSchema.safeParse(expenseData);
@@ -50,6 +52,7 @@ const createExpense = async (req, res) => {
         // Populate category details
         await newExpense.populate('category', 'name');
 
+        
         return res.status(201).json({
             success: true,
             message: 'Expense created successfully',
@@ -304,6 +307,12 @@ const getExpenseStats = async (req, res) => {
             { $limit: 6 }
         ]);
 
+        // Get startDate and endDate of data
+        const firstExpense = await Expense.findOne(filter).sort({ date: 1 });
+        const lastExpense = await Expense.findOne(filter).sort({ date: -1 });
+        const dataStartDate = firstExpense ? firstExpense.date : null;
+        const dataEndDate = lastExpense ? lastExpense.date : null;
+
         return res.status(200).json({
             success: true,
             stats: {
@@ -311,7 +320,9 @@ const getExpenseStats = async (req, res) => {
                 totalCount: await Expense.countDocuments(filter),
                 byCategory: expensesByCategory,
                 bySource: expensesBySource,
-                monthly: monthlyExpenses
+                monthly: monthlyExpenses,
+                startDate: dataStartDate,
+                endDate: dataEndDate
             }
         });
 
