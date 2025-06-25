@@ -2,7 +2,12 @@ import React from 'react'
 
 function Navbar() {
   return (
-    <div>navbar</div>
+    <div>
+      <div>
+        <p>Hello</p>
+        <i class="ri-user-line"></i>
+      </div>
+    </div>
   )
 }
 
