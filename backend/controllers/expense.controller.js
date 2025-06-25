@@ -1,6 +1,9 @@
 import Expense from '../models/expense.model.js';
 import Category from '../models/category.model.js';
 import { z } from 'zod';
+import mongoose from 'mongoose';
+const { ObjectId } = mongoose.Types;
+
 
 // Validation schema for creating/updating expenses
 const expenseSchema = z.object({
@@ -259,16 +262,12 @@ const getExpenseStats = async (req, res) => {
         const userId = req.user.id;
         const { startDate, endDate } = req.query;
 
-        // Build date filter
-        const dateFilter = {};
-        if (startDate || endDate) {
-            if (startDate) dateFilter.$gte = new Date(startDate);
-            if (endDate) dateFilter.$lte = new Date(endDate);
-        }
 
-        const filter = { user: userId };
-        if (Object.keys(dateFilter).length > 0) {
-            filter.date = dateFilter;
+        const filter = { user: new ObjectId(userId) };
+        if (startDate || endDate) {
+            filter.date = {};
+            if (startDate) filter.date.$gte = new Date(startDate);
+            if (endDate) filter.date.$lte = new Date(endDate);
         }
 
         // Get total expenses
@@ -334,7 +333,6 @@ const getExpenseStats = async (req, res) => {
         });
     }
 };
-
 export {
     createExpense,
     getExpenses,

@@ -1,4 +1,5 @@
 import Category from '../models/category.model.js';
+import Expense from '../models/expense.model.js';
 
 // Create default categories for a new user
 const createDefaultCategories = async (userId) => {
@@ -113,4 +114,60 @@ const createCategory = async (req, res) => {
     }
 };
 
-export { createDefaultCategories, getUserCategories, createCategory }; 
+// Delete a category for a user
+const deleteCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        // Check if category exists and belongs to user
+        const category = await Category.findOne({ 
+            _id: id, 
+            user: { $in: [userId] }
+        });
+
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                message: 'Category not found or you do not have permission to delete it'
+            });
+        }
+
+        // Check if category is being used in any expenses
+        const expensesUsingCategory = await Expense.findOne({ 
+            category: id, 
+            user: userId 
+        });
+
+        if (expensesUsingCategory) {
+            return res.status(400).json({
+                success: false,
+                message: 'Cannot delete category. It is being used by existing expenses. Please reassign or delete those expenses first.'
+            });
+        }
+
+        // Remove user from category's user array
+        category.user = category.user.filter(user => user.toString() !== userId);
+        
+        // If no users left, delete the category entirely
+        if (category.user.length === 0) {
+            await Category.findByIdAndDelete(id);
+        } else {
+            await category.save();
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Category deleted successfully'
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: 'Error deleting category',
+            error: error.message
+        });
+    }
+};
+
+export { createDefaultCategories, getUserCategories, createCategory, deleteCategory }; 

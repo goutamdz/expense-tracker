@@ -30,7 +30,7 @@ function ExpenseInput() {
 
   const [expense, setExpense] = useState({
     title: '',
-    amount: 0,
+    amount: '',
     date: '',
     category: '',
     source: '',
