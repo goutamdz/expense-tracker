@@ -13,7 +13,7 @@ const Signup = () => {
     password: ''
   })
   useEffect(() => {
-    showInfoToast('No OTP verification required for authentication!')
+    showInfoToast('No OTP verification is required for authentication!')
   }, [])
   const [loading, setLoading] = useState(false)
 

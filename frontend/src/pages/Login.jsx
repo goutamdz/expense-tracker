@@ -12,7 +12,7 @@ const Login = () => {
     password: ''
   })
   useEffect(() => {
-    showInfoToast('No OTP verification required for login!')
+    showInfoToast('No OTP verification is required for login!')
   }, [])
   const [loading, setLoading] = useState(false)
 
