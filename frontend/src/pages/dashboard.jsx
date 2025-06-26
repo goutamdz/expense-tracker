@@ -70,7 +70,7 @@ function Dashboard() {
     const formatCurrency = useCallback((amount) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'USD'
+            currency: 'INR',
         }).format(amount);
     }, []);
 
@@ -118,8 +118,8 @@ function Dashboard() {
                         description={"Number of Expenses"}
                     />
                     <Card
-                        icon={<i className="ri-money-dollar-circle-line"></i>}
-                        title={stats ? formatCurrency(stats.totalAmount) : "$0.00"}
+                        icon={<i className="ri-money-rupee-circle-line"></i>}
+                        title={stats ? formatCurrency(stats.totalAmount) : "₹0.00"}
                         description={"Total Expenses Amount"}
                     />
                 </div>
