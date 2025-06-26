@@ -78,7 +78,7 @@ function Dashboard() {
         <>
             <Navbar />
 
-            <div className="min-h-screen bg-gray-200 p-6 cursor-pointer">
+            <div className="min-h-screen bg-gray-200 p-6 cursor-pointer pt-20">
                 <button
                     onClick={() => navigate('/add-expense')}
                     className="fixed bottom-8 right-8 flex items-center gap-2 px-5 py-3 bg-blue-100 text-blue-900 font-medium rounded-xl shadow-lg hover:bg-blue-200 transition z-50"
@@ -87,7 +87,7 @@ function Dashboard() {
                     Add Expense
                 </button>
                 {/* Time Frame Filter */}
-                <div className="flex justify-end mb-8">
+                <div className="flex justify-end mb-8 mt-4">
                     <div className="bg-gray-100 rounded-xl shadow p-6 w-[720px]">
                         <FilterTimeFrame
                             selected={selected}

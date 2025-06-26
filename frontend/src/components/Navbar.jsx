@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 function Navbar() {
   const [user, setUser] = useState(null)
-  const [showModal, setShowModal] = useState(false)
+  const [showProfile, setShowProfile] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const navigate = useNavigate()
 
@@ -19,43 +19,71 @@ function Navbar() {
       .then((res) => {
         setUser(res.data.user)
       })
-      .catch((err) => {
+      .catch(() => {
         navigate('/login')
       })
   }, [])
 
   const handleLogout = () => {
     localStorage.removeItem('token')
-    setShowModal(false)
+    setShowProfile(false)
     navigate('/login')
   }
 
   if (!user) return null
 
   return (
-    <div className="w-full flex justify-between items-center px-4 py-2 bg-white shadow h-12 min-h-0">
-      {/* User section */}
-      <div className="relative">
-        <button
-          className="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 focus:outline-none"
-          onClick={() => setShowModal(true)}
-        >
-          <span className="inline-flex items-center justify-center w-8 h-8 bg-indigo-500 text-white rounded-full text-lg">
-            <i className="ri-user-line"></i>
-          </span>
-          <span className="font-medium text-gray-800 text-sm">{user.name.split(' ')[0]}</span>
-        </button>
-        {/* Modal Popup */}
-        {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative animate-fade-in">
+    <nav className="w-full bg-white h-16 flex items-center px-6 z-50 border border-gray-300 shadow-lg fixed top-0 left-0 right-0">
+      {/* Logo/Title */}
+      <div className="flex items-center gap-2 text-indigo-600 font-bold text-xl cursor-pointer select-none" onClick={() => navigate('/')}> 
+        <i className="ri-money-dollar-circle-line text-2xl"></i>
+        <span>ExpenseTracker</span>
+      </div>
+      {/* Center space for future nav links */}
+      <div className="flex-1 flex justify-center">
+        {/* Add nav links here if needed */}
+      </div>
+      {/* Right section: User & Menu */}
+      <div className="flex items-center gap-4">
+        {/* Add Category Dropdown */}
+        <div className="relative">
+          <button
+            className="flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition"
+            onClick={() => setShowMenu((prev) => !prev)}
+          >
+            <i className="ri-add-line text-lg"></i>
+            <span className="hidden sm:inline">Add Category</span>
+            <i className="ri-arrow-down-s-line text-lg"></i>
+          </button>
+          {showMenu && (
+            <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in">
               <button
-                className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-xl"
-                onClick={() => setShowModal(false)}
-                aria-label="Close"
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg"
+                onClick={() => {
+                  setShowMenu(false)
+                  navigate('/add-category')
+                }}
               >
-                &times;
+                Add Categories
               </button>
+              {/* Add more menu items here if needed */}
+            </div>
+          )}
+        </div>
+        {/* User Avatar/Profile Dropdown */}
+        <div className="relative">
+          <button
+            className="flex items-center gap-2 px-2 py-1 rounded-full hover:bg-gray-100 focus:outline-none transition"
+            onClick={() => setShowProfile((prev) => !prev)}
+          >
+            <span className="inline-flex items-center justify-center w-10 h-10 bg-indigo-500 text-white rounded-full text-xl">
+              <i className="ri-user-line"></i>
+            </span>
+            <span className="font-medium text-gray-800 text-base hidden sm:block">{user.name.split(' ')[0]}</span>
+            <i className="ri-arrow-down-s-line text-lg text-gray-500"></i>
+          </button>
+          {showProfile && (
+            <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-xl z-50 animate-fade-in p-5">
               <div className="flex flex-col items-center gap-2">
                 <span className="inline-flex items-center justify-center w-16 h-16 bg-indigo-500 text-white rounded-full text-3xl mb-2">
                   <i className="ri-user-line"></i>
@@ -67,7 +95,7 @@ function Navbar() {
                     Joined: {new Date(user.createdAt).toLocaleDateString()}
                   </div>
                   <button
-                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition w-full"
                     onClick={handleLogout}
                   >
                     Logout
@@ -75,35 +103,20 @@ function Navbar() {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-      {/* More menu */}
-      <div className="relative">
-        <button
-          className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 focus:outline-none"
-          onClick={() => setShowMenu((prev) => !prev)}
-        >
-          <span className="text-2xl text-gray-600">
-            <i className="ri-more-2-fill"></i>
-          </span>
-        </button>
-        {showMenu && (
-          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-lg z-50">
-            <button
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              onClick={() => {
-                setShowMenu(false)
-                navigate('/add-category')
-              }}
-            >
-              Add Categories
-            </button>
-            {/* Add more menu items here if needed */}
-          </div>
-        )}
-      </div>
-    </div>
+      {/* Overlay for closing dropdowns */}
+      {(showProfile || showMenu) && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => {
+            setShowProfile(false)
+            setShowMenu(false)
+          }}
+        />
+      )}
+    </nav>
   )
 }
 

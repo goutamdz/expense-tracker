@@ -110,12 +110,12 @@ function AddCategory() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-200 p-6">
+    <div className="min-h-screen bg-gray-200 p-6 pt-20">
       <ToastContainer />
       
       {/* Header */}
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 mt-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">Manage Categories</h1>
             <p className="text-gray-600 mt-2">Create and manage your expense categories</p>
