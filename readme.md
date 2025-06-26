@@ -4,7 +4,7 @@ A full-stack web application for managing personal expenses with a modern React 
 
 ## 🚀 Live Demo
 
-[View Live Demo](https://your-demo-link.com) *(Coming Soon)*
+[View Live Demo](https://manageyourexpense.vercel.app/) 
 
 ## 📋 Table of Contents
 
