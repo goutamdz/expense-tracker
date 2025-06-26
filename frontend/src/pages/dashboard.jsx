@@ -9,70 +9,61 @@ import axios from 'axios'
 
 function Dashboard() {
     const navigate = useNavigate();
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
-    const [selected, setSelected] = useState(1);
+    // Set selected to null for 'All' by default
+    const [selected, setSelected] = useState(null);
+    const [startDate, setStartDate] = useState(() => new Date('1970-01-01'));
+    const [endDate, setEndDate] = useState(() => new Date('2999-12-31'));
     const [stats, setStats] = useState(null);
 
-    const fetchStats = useCallback(async () => {
-        try {
-            const response = await axios({
-                method: 'GET',
-                url: `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/expense/stats`,
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                },
-                params: {
-                    startDate: startDate.toISOString(),
-                    endDate: endDate.toISOString()
-                }
-            });
-            
-            if (response.data.success) {
-                setStats(response.data.stats);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }, [startDate, endDate]);
-
+    // Update startDate and endDate when selected changes
     useEffect(() => {
-        if(selected === 0) {//current month
-            const now = new Date();
-            const start = new Date(now.getFullYear(), now.getMonth(), 1);
-            const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            setStartDate(new Date(start.getFullYear(), start.getMonth(), start.getDate()));
-            setEndDate(new Date(end.getFullYear(), end.getMonth(), end.getDate()));
-        } else if(selected === 1) {//last 3 months
-            const now = new Date();
-            const start = new Date(now.getFullYear(), now.getMonth() - 3, 1);
-            const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            setStartDate(new Date(start.getFullYear(), start.getMonth(), start.getDate()));
-            setEndDate(new Date(end.getFullYear(), end.getMonth(), end.getDate()));
-        } else if(selected === 2) {//last 6 months
-            const now = new Date();
-            const start = new Date(now.getFullYear(), now.getMonth() - 6, 1);
-            const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            setStartDate(new Date(start.getFullYear(), start.getMonth(), start.getDate()));
-            setEndDate(new Date(end.getFullYear(), end.getMonth(), end.getDate()));
+        const now = new Date();
+        if (selected === 0) { // current month
+            setStartDate(new Date(now.getFullYear(), now.getMonth(), 1));
+            setEndDate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
+        } else if (selected === 1) { // last 3 months
+            setStartDate(new Date(now.getFullYear(), now.getMonth() - 3, 1));
+            setEndDate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
+        } else if (selected === 2) { // last 6 months
+            setStartDate(new Date(now.getFullYear(), now.getMonth() - 6, 1));
+            setEndDate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
+        } else if (selected === null) { // All
+            setStartDate(new Date('1970-01-01'));
+            setEndDate(new Date('2999-12-31'));
         }
     }, [selected]);
 
+    // Fetch stats when startDate, endDate, or selected changes
     useEffect(() => {
-        fetchStats();
-    }, [fetchStats]);
-
-    useEffect(() => {
-        setSelected(0);
-    }, []);
+        if (!startDate || !endDate) return;
+        axios({
+            method: 'GET',
+            url: `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/expense/stats`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            params: {
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString()
+            }
+        })
+        .then((response) => {
+            if (response.data.success) {
+                setStats(response.data.stats);
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, [startDate, endDate, selected]);
 
     const formatDate = useCallback((dateString) => {
         if (!dateString) return 'N/A';
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric' 
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
         });
     }, []);
 
@@ -87,7 +78,7 @@ function Dashboard() {
         <>
             <Navbar />
 
-            <div className="min-h-screen bg-gray-200 p-6">
+            <div className="min-h-screen bg-gray-200 p-6 cursor-pointer">
                 <button
                     onClick={() => navigate('/add-expense')}
                     className="fixed bottom-8 right-8 flex items-center gap-2 px-5 py-3 bg-blue-100 text-blue-900 font-medium rounded-xl shadow-lg hover:bg-blue-200 transition z-50"
@@ -98,7 +89,7 @@ function Dashboard() {
                 {/* Time Frame Filter */}
                 <div className="flex justify-end mb-8">
                     <div className="bg-gray-100 rounded-xl shadow p-6 w-[720px]">
-                        <FilterTimeFrame 
+                        <FilterTimeFrame
                             selected={selected}
                             setSelected={setSelected}
                             startDate={startDate}
@@ -108,7 +99,7 @@ function Dashboard() {
                         />
                     </div>
                 </div>
-                
+
                 {/* Cards Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-8">
                     <Card
