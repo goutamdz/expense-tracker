@@ -33,8 +33,8 @@ function Dashboard() {
         }
     }, [selected]);
 
-    // Fetch stats when startDate, endDate, or selected changes
-    useEffect(() => {
+    // Add a function to refresh stats
+    const refreshStats = useCallback(() => {
         if (!startDate || !endDate) return;
         axios({
             method: 'GET',
@@ -55,7 +55,12 @@ function Dashboard() {
         .catch((err) => {
             console.log(err);
         });
-    }, [startDate, endDate, selected]);
+    }, [startDate, endDate]);
+
+    // Fetch stats when startDate, endDate, or selected changes
+    useEffect(() => {
+        refreshStats();
+    }, [startDate, endDate, selected, refreshStats]);
 
     const formatDate = useCallback((dateString) => {
         if (!dateString) return 'N/A';
@@ -126,7 +131,7 @@ function Dashboard() {
 
                 {/* Expense List */}
                 <div className="max-w-6xl mx-auto">
-                    <ExpenseList startDate={startDate} endDate={endDate} />
+                    <ExpenseList startDate={startDate} endDate={endDate} onDataChange={refreshStats} />
                 </div>
             </div>
         </>

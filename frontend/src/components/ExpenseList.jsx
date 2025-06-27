@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import { showSuccessToast, showErrorToast } from '../utils/toastConfig';
 import 'react-toastify/dist/ReactToastify.css';
 
-function ExpenseList({ startDate, endDate }) {
+function ExpenseList({ startDate, endDate, onDataChange }) {
     const [expenses, setExpenses] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -158,6 +158,7 @@ function ExpenseList({ startDate, endDate }) {
                 showSuccessToast('Expense updated successfully!');
                 setEditExpense(null);
                 fetchExpenses();
+                if (typeof onDataChange === 'function') onDataChange();
             }
         } catch (err) {
             showErrorToast(err.response?.data?.message || 'Failed to update expense');
@@ -180,6 +181,7 @@ function ExpenseList({ startDate, endDate }) {
             if (response.data.success) {
                 showSuccessToast('Expense deleted successfully!');
                 fetchExpenses();
+                if (typeof onDataChange === 'function') onDataChange();
             }
         } catch (err) {
             showErrorToast(err.response?.data?.message || 'Failed to delete expense');
