@@ -86,7 +86,7 @@ function Dashboard() {
             <div className="min-h-screen bg-gray-200 p-6 cursor-pointer pt-20">
                 <button
                     onClick={() => navigate('/add-expense')}
-                    className="fixed bottom-8 right-8 flex items-center gap-2 px-5 py-3 bg-blue-100 text-blue-900 font-medium rounded-xl shadow-lg hover:bg-blue-200 transition z-50"
+                    className="fixed bottom-8 right-8 flex items-center gap-2 px-5 py-3 bg-blue-100 text-blue-900 font-medium rounded-xl shadow-lg hover:bg-blue-200 transition z-50 cursor-pointer"
                 >
                     <i className="ri-file-add-line text-2xl"></i>
                     Add Expense

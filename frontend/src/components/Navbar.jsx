@@ -51,20 +51,20 @@ function Navbar() {
             className="flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition"
             onClick={() => setShowMenu((prev) => !prev)}
           >
-            <i className="ri-add-line text-lg"></i>
-            <span className="hidden sm:inline">Add Category</span>
-            <i className="ri-arrow-down-s-line text-lg"></i>
+            <i className="ri-add-line text-lg cursor-pointer"></i>
+            <span className="hidden sm:inline cursor-pointer">Add/Delete Category</span>
+            <i className="ri-arrow-down-s-line text-lg cursor-pointer"></i>
           </button>
           {showMenu && (
             <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in">
               <button
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg"
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg cursor-pointer"
                 onClick={() => {
                   setShowMenu(false)
                   navigate('/add-category')
                 }}
               >
-                Add Categories
+                Add / Delete
               </button>
               {/* Add more menu items here if needed */}
             </div>
@@ -73,7 +73,7 @@ function Navbar() {
         {/* User Avatar/Profile Dropdown */}
         <div className="relative">
           <button
-            className="flex items-center gap-2 px-2 py-1 rounded-full hover:bg-gray-100 focus:outline-none transition"
+            className="flex items-center gap-2 px-2 py-1 rounded-full hover:bg-gray-100 focus:outline-none transition cursor-pointer"
             onClick={() => setShowProfile((prev) => !prev)}
           >
             <span className="inline-flex items-center justify-center w-10 h-10 bg-indigo-500 text-white rounded-full text-xl">
@@ -95,7 +95,7 @@ function Navbar() {
                     Joined: {new Date(user.createdAt).toLocaleDateString()}
                   </div>
                   <button
-                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition w-full"
+                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition w-full cursor-pointer"
                     onClick={handleLogout}
                   >
                     Logout

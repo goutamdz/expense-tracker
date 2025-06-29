@@ -110,7 +110,7 @@ function AddCategory() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-200 p-6 pt-20">
+    <div className="min-h-screen bg-gray-200 p-6 pt-20 ">
       <ToastContainer />
       
       {/* Header */}
@@ -122,7 +122,7 @@ function AddCategory() {
           </div>
           <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition cursor-pointer"
           >
             <i className="ri-arrow-left-line"></i>
             Back to Dashboard
@@ -157,7 +157,7 @@ function AddCategory() {
                   loading || !newCategory.trim()
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     : 'bg-indigo-600 text-white hover:bg-indigo-700'
-                }`}
+                } cursor-pointer`}
               >
                 {loading ? (
                   <>
@@ -166,7 +166,7 @@ function AddCategory() {
                   </>
                 ) : (
                   <>
-                    <i className="ri-add-line"></i>
+                    <i className="ri-add-line cursor-pointer"></i>
                     Create Category
                   </>
                 )}
@@ -211,7 +211,7 @@ function AddCategory() {
                     
                     <button
                       onClick={() => handleDelete(category._id)}
-                      className="text-red-500 hover:text-red-700 transition p-1"
+                      className="text-red-500 hover:text-red-700 transition p-1 cursor-pointer"
                       title="Delete category"
                     >
                       <i className="ri-delete-bin-line text-lg"></i>

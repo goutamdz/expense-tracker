@@ -218,7 +218,7 @@ function ExpenseList({ startDate, endDate, onDataChange }) {
                     <select
                         value={filters.category}
                         onChange={(e) => handleFilterChange('category', e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm"
+                        className="px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm cursor-pointer"
                     >
                         <option value="">All Categories</option>
                         {categories.map(category => (
@@ -231,7 +231,7 @@ function ExpenseList({ startDate, endDate, onDataChange }) {
                     <select
                         value={filters.source}
                         onChange={(e) => handleFilterChange('source', e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm"
+                        className="px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm cursor-pointer"
                     >
                         <option value="">All Sources</option>
                         {sources.map(source => (
@@ -244,7 +244,7 @@ function ExpenseList({ startDate, endDate, onDataChange }) {
                     <select
                         value={filters.sortBy}
                         onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm"
+                        className="px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm cursor-pointer"
                     >
                         <option value="date">Sort by Date</option>
                         <option value="amount">Sort by Amount</option>
@@ -253,7 +253,7 @@ function ExpenseList({ startDate, endDate, onDataChange }) {
                     
                     <button
                         onClick={() => handleFilterChange('sortOrder', filters.sortOrder === 'desc' ? 'asc' : 'desc')}
-                        className="px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm"
+                        className="px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm cursor-pointer"
                     >
                         <i className={`ri-sort-${filters.sortOrder === 'desc' ? 'desc' : 'asc'}`}></i>
                     </button>
@@ -327,13 +327,13 @@ function ExpenseList({ startDate, endDate, onDataChange }) {
                                     </td>
                                     <td className="px-4 py-4">
                                         <button
-                                            className="text-indigo-600 hover:text-indigo-900 font-medium mr-2"
+                                            className="text-indigo-600 hover:text-indigo-900 font-medium mr-2 cursor-pointer"
                                             onClick={() => handleEditClick(expense)}
                                         >
-                                            <i className="ri-edit-2-line"></i> Edit
+                                            <i className="ri-edit-2-line "></i> Edit
                                         </button>
                                         <button
-                                            className="text-red-600 hover:text-red-800 font-medium"
+                                            className="text-red-600 hover:text-red-800 font-medium cursor-pointer"
                                             onClick={() => handleDelete(expense._id)}
                                         >
                                             <i className="ri-delete-bin-line"></i> Delete
