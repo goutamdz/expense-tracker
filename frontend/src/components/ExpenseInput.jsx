@@ -183,7 +183,7 @@ function ExpenseInput() {
             </button>
             <button
               type="submit"
-              className="flex items-center gap-2 px-6 py-2 rounded-md bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 disabled:opacity-60"
+              className="flex items-center gap-2 px-6 py-2 rounded-md bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 disabled:opacity-60 cursor-pointer"
               disabled={isLoading}
             >
               {isLoading ? <i className="ri-loader-2-line animate-spin"></i> : <i className="ri-save-2-line"></i>} Save

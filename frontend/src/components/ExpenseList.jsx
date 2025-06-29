@@ -343,6 +343,20 @@ function ExpenseList({ startDate, endDate, onDataChange }) {
                             ))}
                         </tbody>
                     </table>
+                    {/* Summary Section */}
+                    <div className="flex flex-col sm:flex-row justify-between items-center bg-gray-50 px-4 py-3 border-t mt-2 rounded-b-lg">
+                        <div className="text-sm text-gray-700 font-medium">
+                            Total Expenses: <span className="font-semibold">{pagination.totalExpenses}</span>
+                        </div>
+                        <div className="text-sm text-gray-700 font-medium">
+                            Total Amount:{" "}
+                            <span className="font-semibold">
+                                {formatCurrency(
+                                    expenses.reduce((sum, exp) => sum + (Number(exp.amount) || 0), 0)
+                                )}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             )}
 

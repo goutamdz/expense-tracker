@@ -11,25 +11,25 @@ function Dashboard() {
     const navigate = useNavigate();
     // Set selected to null for 'All' by default
     const [selected, setSelected] = useState(null);
-    const [startDate, setStartDate] = useState(() => new Date('1970-01-01'));
-    const [endDate, setEndDate] = useState(() => new Date('2999-12-31'));
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
     const [stats, setStats] = useState(null);
 
     // Update startDate and endDate when selected changes
     useEffect(() => {
         const now = new Date();
-        if (selected === 0) { // current month
+        if (selected === 1) { // current month
             setStartDate(new Date(now.getFullYear(), now.getMonth(), 1));
             setEndDate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
-        } else if (selected === 1) { // last 3 months
+        } else if (selected === 2) { // last 3 months
             setStartDate(new Date(now.getFullYear(), now.getMonth() - 3, 1));
             setEndDate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
-        } else if (selected === 2) { // last 6 months
+        } else if (selected === 3) { // last 6 months
             setStartDate(new Date(now.getFullYear(), now.getMonth() - 6, 1));
             setEndDate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
-        } else if (selected === null) { // All
+        } else if (selected === null || selected===0) { // All
             setStartDate(new Date('1970-01-01'));
-            setEndDate(new Date('2999-12-31'));
+            setEndDate(new Date());
         }
     }, [selected]);
 
@@ -55,7 +55,7 @@ function Dashboard() {
         .catch((err) => {
             console.log(err);
         });
-    }, [startDate, endDate]);
+    }, [startDate, endDate, selected]);
 
     // Fetch stats when startDate, endDate, or selected changes
     useEffect(() => {

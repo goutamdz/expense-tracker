@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 
 const options = [
+  'All Time',
   'Current Month',
   'Last 3 Months',
   'Last 6 Months',
   'Custom Range',
 ]
 
-function FilterTimeFrame({ selected, setSelected, startDate, setStartDate, endDate, setEndDate }) {
+function FilterTimeFrame({ selected, setSelected, startDate, setStartDate, endDate, setEndDate, onSearch }) {
   const [showCustomDates, setShowCustomDates] = useState(false);
 
   const handleOptionClick = (index) => {
     setSelected(index);
     
-    if (index === 3) { // Custom Range
+    if (index === 4) { // Custom Range
       setShowCustomDates(true);
     } else {
       setShowCustomDates(false);
@@ -22,6 +23,7 @@ function FilterTimeFrame({ selected, setSelected, startDate, setStartDate, endDa
 
   const handleCustomDateChange = (type, value) => {
     if (type === 'start') {
+      // setStartDate(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));
       setStartDate(new Date(value));
     } else {
       setEndDate(new Date(value));
@@ -59,7 +61,7 @@ function FilterTimeFrame({ selected, setSelected, startDate, setStartDate, endDa
             <label className="text-sm font-medium text-gray-700">From:</label>
             <input
               type="date"
-              value={startDate.toISOString().split('T')[0]}
+              value={startDate ? startDate.toISOString().split('T')[0] : ''}
               onChange={(e) => handleCustomDateChange('start', e.target.value)}
               className="px-3 py-1 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm"
             />
@@ -69,7 +71,7 @@ function FilterTimeFrame({ selected, setSelected, startDate, setStartDate, endDa
             <label className="text-sm font-medium text-gray-700">To:</label>
             <input
               type="date"
-              value={endDate.toISOString().split('T')[0]}
+              value={endDate ? endDate.toISOString().split('T')[0] : ''}
               onChange={(e) => handleCustomDateChange('end', e.target.value)}
               className="px-3 py-1 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm"
             />
@@ -77,10 +79,12 @@ function FilterTimeFrame({ selected, setSelected, startDate, setStartDate, endDa
 
           <button
             onClick={() => {
-              setSelected(0); // Reset to Current Month
-              setShowCustomDates(false);
+              setSelected(0); // Reset to 1 year
+              setStartDate(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));
+              setEndDate(new Date());
+              setShowCustomDates(true);
             }}
-            className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:underline"
+            className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:underline cursor-pointer"
           >
             Reset
           </button>
