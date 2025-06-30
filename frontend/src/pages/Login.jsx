@@ -33,7 +33,7 @@ const Login = () => {
         method: 'POST',
         url: `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/user/login`,
         data: {
-          email: formData.email,
+          email: formData.email.trim().toLocaleLowerCase(),
           password: formData.password
         }
       })
@@ -124,7 +124,7 @@ const Login = () => {
                 loading 
                   ? 'bg-indigo-400 cursor-not-allowed' 
                   : 'bg-indigo-600 hover:bg-indigo-700'
-              }`}
+              } cursor-pointer`}
             >
               {loading ? (
                 <div className="flex items-center">
@@ -141,7 +141,7 @@ const Login = () => {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 cursor-pointer">
               Don't have an account?{' '}
               <Link
                 to="/signup"
