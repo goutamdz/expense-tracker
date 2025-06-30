@@ -55,12 +55,12 @@ function Dashboard() {
         .catch((err) => {
             console.log(err);
         });
-    }, [startDate, endDate, selected]);
+    }, [startDate, endDate]); // <-- Remove 'selected' from here
 
-    // Fetch stats when startDate, endDate, or selected changes
+    // Fetch stats when startDate or endDate changes
     useEffect(() => {
         refreshStats();
-    }, [startDate, endDate, selected, refreshStats]);
+    }, [startDate, endDate, refreshStats]); // <-- Remove 'selected' from here
 
     const formatDate = useCallback((dateString) => {
         if (!dateString) return 'N/A';
